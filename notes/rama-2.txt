@@ -1,0 +1,19 @@
+Interacción entre Módulos
+Los módulos funcionan como islas que se encuentran aisladas, cada uno con sus controladores, services etc., en muchos casos vamos a necesitar que nuestros módulos se comuniquen entre si dependiendo de la lógica del negocio
+
+¿Cómo comunicar módulos?
+En el siguiente ejemplo vamos a comunicar el modulo de users con el modulo de products
+
+Entities
+Para hacer uso de alguna entiti de otro modulo simplemente importamos la clase:
+
+El el siguiente ejemplo exportamos la entidad Product que hace parte del modulo products en nuestra entidad order que hace parte del modulo de user
+
+import { User } from './user.entity';
+import { Product } from './../../products/entities/product.entity';
+
+export class Order {
+  date: Date;
+  user: User;
+  products: Product[];
+}
