@@ -1,0 +1,26 @@
+Entendiendo la inyección de dependecias
+Patrón de Inyección de dependencias:
+Es un principio de arquitectura donde nos permite desacoplar las cosas y simplemente un controlador por medio de su constructor puede decir que utiliza el servicio A o el servicio B
+
+Un controlador puede inyectar mas de un servicio, tantos como quiera
+
+Esto se logra a través del patrón singleton, lo que nos permite que una vez creada nuestra clase (servicio) la instancia de nuestro servicio se pueda utilizar para los demás controladores, sin necesidad de crear varias instancias del mismo servicio.
+
+Decorador @inyectable
+Para que lo anterior funcione en NestJS todos nuestros controladores deben tener el decorador @inyectable que le indica a nestJSque debe manejar esto como una dependencia y cumplir con el patrón singleton
+
+Un servicio solo pertenece a un Modulo
+
+
+El tema de la inyección de dependencias puede dar para un curso entero sobre patrones de diseño, principios SOLID y patrones de arquitectura.
+
+Creo que el profe hizo un resumen lo mas corto posible para entenderlo y no verlo tan abstracto, pero me gustaría aclarar lo siguientes:
+
+El origen es por los principios SOLID, tenemos la S que se refiere a ‘Dependency Inversion’ (Inversion de dependecias), que en pocas palabras quieres decir que un sistema flexible es aquel que se refiere a abstracciones.
+
+La ‘Dependency Injection’ (Inyeccion de dependencias) es un patron de diseño que implementa el principio de ‘Dependency Inversion’ de los principios SOLID 😉
+
+
+El problema de la referencia circular se puede resolver usando la función forwardRef(), pero como el profesor lo menciona, es una situación que se debe tratar evitar
+
+Documentación: https://docs.nestjs.com/fundamentals/circular-dependency
