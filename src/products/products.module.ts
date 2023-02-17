@@ -10,5 +10,7 @@ import { CategoriesService } from './services/categories.service';
 @Module({
   controllers: [ProductsController, CategoriesController, BrandsController],
   providers: [ProductsService, BrandsService, CategoriesService],
+  //*Vamos a hacer que products service sea exportable y utilizable en otros modulos... cuando queremos utilizar algun servicio en dentro de un modulo distinto al propio, debemos especificar que este se puede importar...
+  exports: [ProductsService],
 })
 export class ProductsModule {}
