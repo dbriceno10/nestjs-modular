@@ -1,0 +1,71 @@
+Para los que usan windows y powershell una manera de setear la variable antes del comando es así:
+
+$env:NODE_ENV = 'prod'; npm run start:dev
+Dependiendo del sistema operativo y la terminal la manera de hacerlo cambio, hay paquetes en npm que nos ayudan a setear variables sin importar la plataforma, como por ejemplo
+
+cross-env
+
+
+
+Resumen
+Introducción
+Cuando queremos que la instancia de una clase se comparta por todo un modulo debemos hacer 2 cosas.
+
+Le colocamos el decorador @Inyectable a la clase
+@Injectable() // <-- El decorador
+export class ProductsService {
+	// ...
+}
+Y lo declaramos dentro del modulo correspondiente usando la sintaxis resumida
+@Module({
+  ...
+  providers: [..., ProductsService], // Aqui por ejemplo
+  ...
+})
+useClass
+Internamente, nest js rescribe esta sintaxis de la siguiente forma:
+
+@Module({
+  ...
+  providers: [...,
+		{
+			provide: ProducsService, // Nombre con el que haremos referencia a ella
+			useClass: ProducsService // Nombre de la clase que se usara
+		}
+	], // Aqui por ejemplo
+  ...
+})
+useValues
+Además de poder inyectar clases también podemos inyectar valores. Esto es util para compartir valores que globales de la aplicación y evita que estos se guarden en memoria cada vez que se requieran.
+
+const API_KEY = '12345634';
+const API_KEY_PROD = 'PROD1212121SA';
+
+@Module({
+  imports: [...],
+  controllers: [..],
+  providers: [
+    AppService,
+    {
+      provide: 'API_KEY', // Nombre con el que se hara referencia
+      useValue: process.env.NODE_ENV === 'prod' ? API_KEY_PROD : API_KEY, // El valor
+    },
+  ],
+})
+export class AppModule {}
+Para usar el valor solo debemos inyectarlo.
+
+// src/app.service.ts
+import { Injectable, Inject } from '@nestjs/common';
+
+@Injectable()
+export class AppService {
+  constructor(@Inject('API_KEY') private apiKey: string) {} // 👈 Inject API_KEY
+  getHello(): string {
+    return `Hello World! ${this.apiKey}`;
+  }
+}
+
+
+Para correr en la terminal:
+NODE_ENV=prod npm run start:dev
