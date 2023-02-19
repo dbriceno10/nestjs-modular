@@ -1,0 +1,7 @@
+El HttpModule de “@nestjs/common” ya no sera soportado en las siguientes versiones, tiene que utilizar “@nestjs/axios” y funciona exactamente igual.
+
+The HttpModule exported from the @nestjs/common package has been deprecated and will be removed in the next major release. Instead, please use the @nestjs/axios package
+
+Serian los mismos pasos que realizo el profesor pero habiendo instalado antes la dependencia
+
+npm i --save @nestjs/axios
