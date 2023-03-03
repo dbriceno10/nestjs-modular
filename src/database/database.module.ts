@@ -11,6 +11,7 @@ const API_KEY_PROD = 'PROD1212121SA';
       useValue: process.env.NODE_ENV === 'prod' ? API_KEY_PROD : API_KEY,
     },
   ],
+  //exportamos todos los providers que deseemos utilizar en otros lugares de la apliacion, ya no vamos a tener que importarlos en cada lucar, simplemente los vamos a inyectar
   exports: ['API_KEY'],
 })
 export class DatabaseModule {}

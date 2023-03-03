@@ -1,0 +1,56 @@
+Apuntes
+Un modulo global será instanciado en todos los demás módulos si que nosotros tengamos que hacerlo explícitamente.
+
+Creando un modulo global
+Para ello creamos un modulo
+nest g mo database
+Al modulo le agregaremos el decorador global
+...
+@Global() // Aqui
+@Module({})
+export class ProductsModule {}
+Ahora podemos agregar todos los controladores, modulos y providers que necesitemos
+import { Module, Global } from '@nestjs/common';
+
+const API_KEY = '12345634';
+const API_KEY_PROD = 'PROD1212121SA';
+
+@Global()
+@Module({
+  providers: [
+    {
+      provide: 'API_KEY',
+      useValue: process.env.NODE_ENV === 'prod' ? API_KEY_PROD : API_KEY,
+    },
+  ],
+  exports: ['API_KEY'],
+})
+export class DatabaseModule {}
+y agregaremos el modulo global al app.module.ts
+// src/app.module.ts
+...
+import { DatabaseModule } from './database/database.module';
+
+@Module({
+  imports: [
+    ...
+    DatabaseModule // 👈 Use DatabaseModule like global Module
+   ],
+  ...
+})
+export class AppModule {}
+Listo, ahora podremos usar todos los controladores, modulos y providers que fueron declarados en el modulo global sin tener que instanciar el modulo DatabaseModule en los modulos que se requieran
+
+// src/users/services/users.service.ts
+
+import { Injectable, NotFoundException, Inject } from '@nestjs/common';
+..
+
+@Injectable()
+export class UsersService {
+  constructor(
+    private productsService: ProductsService,
+    @Inject('API_KEY') private apiKey: string, // 👈 Inject API_KEY
+  ) {}
+
+}
