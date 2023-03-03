@@ -22,10 +22,17 @@ const API_KEY_PROD = 'PRODUC15156';
     {
       provide: 'TASKS',
       useFactory: async (http: HttpService) => {
-        const tasks = await http
-          .get('https://jsonplaceholder.typicode.com/todos')
-          .toPromise();
-        return tasks.data;
+        try {
+          const tasks = await http
+            .get('https://jsonplaceholder.typicode.com/todos')
+            .toPromise();
+          console.log(
+            'NO SE ACONCEJA USAR EL USE FACTORI ACA PARA HACER REQUEERT A UN AMI PORQUE VA A TARDAR EN LEVANTAR EL SERVIDOR HASTA QUE LA PROMESA SEA RESUELTA...',
+          );
+          return tasks.data;
+        } catch (error) {
+          console.log(error);
+        }
       },
       inject: [HttpService],
     },
