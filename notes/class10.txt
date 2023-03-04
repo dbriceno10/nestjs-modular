@@ -1,0 +1,78 @@
+Formas para correr el proyecto en diferentes ambientes
+NODE_ENV=stag npm run start:dev  ---> lo ejecutaria en stage
+
+
+Para establecer la variable de entorno en Windows Terminal u otro semejante diferente a linux:
+
+$env:NODE_ENV="dev"
+$env:NODE_ENV="stag"
+$env:NODE_ENV="prod"
+
+
+
+Apuntes
+Crear archivos env para los distintos ambientes
+Ya que configuramos el archivo env que contiene el valor de las variables de entorno para el servidor de desarrollo debemos crear los archivos .env para el servidor de pruebas y produccion.
+
+// .stag.env
+DATABASE_NAME=my_db_stag
+API_KEY=333
+
+// .prod.env
+DATABASE_NAME=my_db_prod
+API_KEY=999
+¿Cómo elegir dinámicamente el archivo env?
+Nuestro código debe elegir automáticamente que archivo .env debe tomar según en el servidor en el que se este ejecutando. Para ello debemos crear un objeto en donde listaremos todos los ambientes que existen y los ligaremos con su archivo correspondiente.
+
+// src/enviroments.ts
+export const enviroments = {
+  dev: '.env',
+  stag: '.stag.env',
+  prod: '.prod.env',
+};
+Ahora solo debemos agregar la linea mágica para que el archivo .env correspondiente se inyecte en el código.
+
+// src/app.module.ts
+...
+
+import { enviroments } from './enviroments'; // 👈
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: enviroments[process.env.NODE_ENV] || '.env', // 👈
+      isGlobal: true,
+    }),
+    ...
+  ],
+  ...
+})
+export class AppModule {}
+Llamar a las variables de entorno
+Listo, ahora solo debemos preocuparnos por obtener las variables de entorno.
+
+// src/app.service.ts
+import { ConfigService } from '@nestjs/config'; // 👈
+
+@Injectable()
+export class AppService {
+  constructor(
+    @Inject('TASKS') private tasks: any[],
+    private config: ConfigService,  // 👈
+  ) {}
+  getHello(): string {
+    const apiKey = this.config.get<string>('API_KEY');  // 👈
+    const name = this.config.get('DATABASE_NAME');  // 👈
+    return `Hello World! ${apiKey} ${name}`;
+  }
+}
+Especificar ambiente
+Podemos indicar en que ambiente se esta trabajando usando las siguientes lineas.
+
+NODE_ENV=prod npm run start:dev
+NODE_ENV=stag npm run start:dev
+Si estas usando el powershell de windos
+
+$env:NODE_ENV="prod"; npm run start:dev
+$env:NODE_ENV="stag"; npm run start:dev
+$env:NODE_ENV="dev"; npm run start:dev
