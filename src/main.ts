@@ -20,7 +20,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  app.enableCors();
+  app.enableCors(); //habilitamos los cort a todo el mundo... se pude configurar a dominios especificos, es un peligro que cualquiera pueda hacer request a tu aplicacion
   await app.listen(process.env.PORT || 3000);
 }
 bootstrap();
