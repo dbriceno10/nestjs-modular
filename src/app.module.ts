@@ -6,14 +6,14 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { DatabaseModule } from './database/database.module';
 
-import { enviroments } from './enviroments';
-import config from './config';
+import { enviroments } from './enviroments'; //Archivo con variables de entortno
+import config from './config'; //Tipados para las variables de entorno
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: enviroments[process.env.NODE_ENV] || '.env',
-      load: [config],
+      load: [config], //Cargamos las configuraciones de las variables de entorno (los tipados)
       isGlobal: true,
     }),
     HttpModule,
