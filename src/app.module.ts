@@ -9,6 +9,7 @@ import { DatabaseModule } from './database/database.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      //Inyectamos las variables de entorno y las hacemos accesibles de forma global
       envFilePath: '.env',
       isGlobal: true,
     }),

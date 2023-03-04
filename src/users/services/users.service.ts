@@ -11,7 +11,7 @@ import { ProductsService } from './../../products/services/products.service';
 export class UsersService {
   constructor(
     private productsService: ProductsService,
-    private configService: ConfigService,
+    private configService: ConfigService, //acemos accesibles a las variables de entorno
   ) {}
 
   private counterId = 1;
@@ -25,6 +25,7 @@ export class UsersService {
   ];
 
   findAll() {
+    //traemos a la variable de entorno...
     const apiKey = this.configService.get('API_KEY');
     const dbName = this.configService.get('DATABASE_NAME');
     console.log(apiKey, dbName);
